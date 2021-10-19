@@ -36,7 +36,7 @@ void SQLiteManager::close()
 // SQL команды берутся из файла create_pytomnik_db.sql
 bool SQLiteManager::resetDb()
 {
-    QFile sqlFile(SettingsRepository::creationDbSqlScriptPath);
+    QFile sqlFile(QDir::currentPath() + "/" + SettingsRepository::creationDbSqlScriptPath);
     if (!sqlFile.exists())
         return false;
 
@@ -50,7 +50,7 @@ bool SQLiteManager::resetDb()
     if (text.size() == 0)
         return false;
 
-    if (!removeDbFile())
+    if (!removeDbFileAndCreateOne())
         return false;
 
     bool isOK = true;
@@ -72,11 +72,11 @@ bool SQLiteManager::resetDb()
 }
 
 // удаляет файл базы данных SQLite
-bool SQLiteManager::removeDbFile()
+bool SQLiteManager::removeDbFileAndCreateOne()
 {
     close();
-    bool result = QFile("pitomnic_db.sqlite").remove();
-    result &= connect();
+    QFile(QDir::currentPath() + "/pitomnik_db.sqlite").remove();
+    bool result = connect();
     return result;
 }
 

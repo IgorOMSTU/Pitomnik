@@ -29,6 +29,9 @@ void AddNewRecordDialog::createUI()
 
     vbox->addItem(grdLayout);
 
+    // Контролы для ввода данных создаются во время выполнения,
+    // в зависимости от типа полей, который есть в таблице
+
     for (int i = 0; i < mFieldsVariant.size(); i++)
     {
         auto &fieldVariant = mFieldsVariant[i];
@@ -61,7 +64,7 @@ void AddNewRecordDialog::createUI()
             int value = fieldVariant.toInteger_or(0);
             ((QSpinBox*)valueWidget)->setValue(value);
         }
-        // в combobox записывается FK (скрыт) и строка для отображения
+        // в combobox записывается внешний ключ (скрыт) и строка для отображения
         else if (fieldVariant.getFieldType() == FieldType::FK) {
             valueWidget = new QComboBox(this);
             auto combobox = ((QComboBox*)valueWidget);
@@ -76,6 +79,9 @@ void AddNewRecordDialog::createUI()
                             fk);
             }
         }
+
+        // Записываем номер поля в талице в т.н. user property, это нужно для упрощения получения данных.
+        // user property - это словарь с данными, который привязан к некоторому контролу
         valueWidget->setProperty(mWidgetPropertyName.toLocal8Bit().constData(), QVariant(i));
 
         grdLayout->addWidget(titleWidget, i+1, 0);

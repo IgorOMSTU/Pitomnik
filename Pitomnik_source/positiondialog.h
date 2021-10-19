@@ -8,6 +8,7 @@
 class SQLiteReader;
 class SQLiteWriter;
 
+// Диалог, показывающий таблицу "Должности"
 class PositionsDialog : public ADialogBase
 {
     Q_OBJECT

@@ -8,6 +8,7 @@
 class SQLiteReader;
 class SQLiteWriter;
 
+// Диалог, показывающий таблицу "Клиенты"
 class ClientsDialog : public ADialogBase
 {
     Q_OBJECT

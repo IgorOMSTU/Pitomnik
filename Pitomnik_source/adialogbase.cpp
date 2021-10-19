@@ -56,13 +56,18 @@ void ADialogBase::showModal()
 void ADialogBase::populateTable()
 {
     auto reader = mSqliteManager->getSqliteReader();
-    mModel = readData(reader);
+    mModel = readData(reader); // запрашиваем у класса наследника модель QSqlRelationalTableModel
 
-    // получим имена столбцов на русском языке
+    // получим от класса наследника имена столбцов на русском языке
     QList<FieldVariant> fieldVariants = createEmptyRecord(reader);
     for (int i = 0; i < fieldVariants.size(); i++) {
         mModel->setHeaderData(i, Qt::Horizontal, fieldVariants[i].getColumnName());
     }
+
+    // Привязываем визуальную таблицу к модели QSqlRelationalTableModel,
+    // теперь визуальная таблица будет отображать данные из этой модели.
+    // Сама модель QSqlRelationalTableModel привязана к таблице БД и получает
+    // данные непосредственно из нее.
 
     mTableView->setModel(mModel);
     mTableView->setItemDelegate(new QSqlRelationalDelegate(mTableView));
@@ -76,6 +81,10 @@ void ADialogBase::addRecordSlot()
         mAddNewRecordDialog = nullptr;
     }
 
+    // Пользователь нажал кнопку "Добавить" новую запись в таблицу.
+    // Значит теперь нужно запросить у класса наследника набор полей для добавления
+    // и показать AddNewRecordDialog диалог, который отвечает за добавление новой записи.
+
     auto reader = mSqliteManager->getSqliteReader();
     QList<FieldVariant> fieldVariants = createEmptyRecord(reader);
     mAddNewRecordDialog = new AddNewRecordDialog(this, fieldVariants);
@@ -84,6 +93,11 @@ void ADialogBase::addRecordSlot()
 
 void ADialogBase::deleteRecordSlot()
 {
+    // Пользователь нажал кнопку "Удалить" запись из таблицы.
+    // Значит теперь нужно получить номер строки из визуальной таблицы и удалить
+    // эту строку из модели QSqlRelationalTableModel. Удаление записи из таблилцы
+    // БД произойдет автоматически, т.к. модель связана с таблицей в БД
+
     QModelIndex index = mTableView->currentIndex();
 
     int answer = showDoYouWantRemoveRecordbMessageBox();

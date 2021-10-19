@@ -10,7 +10,7 @@ bool SQLiteWriter::writePosition(QList<FieldVariant> fieldsVariant)
         return false;
 
     QString position;
-    bool isOk = parseField(fieldsVariant[1], position);
+    bool isOk = parseField(fieldsVariant[1], position); // преобразуем данные из fieldsVariant в строку
 
     if (isOk)
     {
@@ -29,6 +29,7 @@ bool SQLiteWriter::writeEmployee(QList<FieldVariant> fieldsVariant)
      QString fullName, address, salary, phoneNumber, fkPosition;
      bool isOk = true;
 
+     // преобразуем данные из fieldsVariant в строку
      isOk &= parseField(fieldsVariant[1], fullName);
      isOk &= parseField(fieldsVariant[2], address);
      isOk &= parseField(fieldsVariant[3], salary);
@@ -58,6 +59,7 @@ bool SQLiteWriter::writeClient(QList<FieldVariant> fieldsVariant)
      QString fullName, address, phoneNumber, email;
      bool isOk = true;
 
+     // преобразуем данные из fieldsVariant в строку
      isOk &= parseField(fieldsVariant[1], fullName);
      isOk &= parseField(fieldsVariant[2], address);
      isOk &= parseField(fieldsVariant[3], phoneNumber);
@@ -85,6 +87,7 @@ bool SQLiteWriter::writeOrder(QList<FieldVariant> fieldsVariant)
      QString date, fkAnimal, fkClient;
      bool isOk = true;
 
+     // преобразуем данные из fieldsVariant в строку
      isOk &= parseField(fieldsVariant[1], date);
      isOk &= parseField(fieldsVariant[2], fkAnimal);
      isOk &= parseField(fieldsVariant[3], fkClient);
@@ -110,6 +113,7 @@ bool SQLiteWriter::writeAnimal(QList<FieldVariant> fieldsVariant)
      QString nickName, sex, breed, fkEmployee, price;
      bool isOk = true;
 
+     // преобразуем данные из fieldsVariant в строку
      isOk &= parseField(fieldsVariant[1], nickName);
      isOk &= parseField(fieldsVariant[2], sex);
      isOk &= parseField(fieldsVariant[3], breed);
@@ -133,6 +137,7 @@ bool SQLiteWriter::writeAnimal(QList<FieldVariant> fieldsVariant)
 
 bool SQLiteWriter::parseField(FieldVariant &fieldVariant, QString &outValue) {
 
+    // поле обязательное для заполнения не может быть пустым
     if (fieldVariant.isRequired() && fieldVariant.isEmpty())
         return false;
 

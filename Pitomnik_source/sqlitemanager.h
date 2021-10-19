@@ -6,22 +6,24 @@
 class SQLiteReader;
 class SQLiteWriter;
 
+// класс отвечает за соединение с базой данный и
+// получение ошибок от драйвера СУБД
 class SQLiteManager
 {
 private:
     QString mDbName;
     QSqlDatabase mDb;
-    SQLiteReader *mSqliteReader;
-    SQLiteWriter *mSqliteWriter;
+    SQLiteReader *mSqliteReader;  // используется для записи данных в БД
+    SQLiteWriter *mSqliteWriter;  // используется для чтения данных из БД
 
-    bool removeDbFile();
+    bool removeDbFileAndCreateOne();  // удалить БД и создать заново
 public:
     SQLiteManager(QString dbName);
 
     bool connect();
     void close();
 
-    bool resetDb();
+    bool resetDb(); // удалить БД и создать заново
 
     QString getLastError();
 
